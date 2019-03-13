@@ -1,6 +1,11 @@
 from flask import Flask, jsonify, abort, make_response, request
+from flask_pymongo import PyMongo
+from pymongo.errors import ConnectionFailure
 
 app = Flask(__name__)
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/admin"
+mongo = PyMongo(app)
 
 tasks = [
   {
@@ -24,7 +29,11 @@ def not_found_error(error):
 
 @app.route('/health')
 def get_health():
-  return jsonify(success=True)
+  try:
+    mongo.cx.admin.command("ismaster")
+    return jsonify(success=True)
+  except ConnectionFailure:
+    abort(500)
 
 @app.route('/todo/api/tasks', methods=['GET'])
 def get_tasks():
