@@ -1,11 +1,14 @@
 from flask import Flask, jsonify, abort, make_response, request
 from flask_pymongo import PyMongo
 from pymongo.errors import ConnectionFailure
-from bson.json_util import dumps
+import os
 
 app = Flask(__name__)
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/admin"
+
+mongodb_host = os.environ.get("MONGODB_HOST")
+mongodb_port = os.environ.get("MONGODB_PORT")
+app.config["MONGO_URI"] = f"mongodb://{mongodb_host}:{mongodb_port}/admin"
 mongo = PyMongo(app)
 
 
