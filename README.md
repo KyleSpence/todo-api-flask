@@ -20,7 +20,7 @@ You'll need the following environment variables to be defined
 
 ## Endpoints
 ### Health
-Checks to see if the API is alive and connect to mongo
+Checks to see if the API is alive and can connect to mongo
 ```bash
 curl --request GET \
   --url http://localhost:5000/health
